@@ -1,11 +1,11 @@
 print "Triangle side A = "
-side_a = gets
+side_a = gets.to_f
 print "Triangle side B = "
-side_b = gets
+side_b = gets.to_f
 print "Triangle side C = "
-side_c = gets
+side_c = gets.to_f
 
-sides = [side_a.to_f, side_b.to_f, side_c.to_f] 
+sides = [side_a, side_b, side_c] 
 max_side = sides.sort!.pop
 
 if (side_a == side_b) && (side_b == side_c)
