@@ -32,18 +32,17 @@ class Train
 
   #стремно выглядит управление состоянием станции из объекта поезда. 
   def go_forward
-    if next_station
-      current_station.depart(self)
-      next_station.accept(self)
-      @location += 1 
-    end
+    return unless next_station
+    current_station.depart(self)
+    next_station.accept(self)
+    @location += 1 
   end
 
   def go_back
-    if previous_station
-      current_station.depart(self)
-      previous_station.accept(self)
-      @location -= 1
+    return unless previous_station
+    current_station.depart(self)
+    previous_station.accept(self)
+    @location -= 1
     end
   end
 
