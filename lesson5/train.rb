@@ -41,7 +41,6 @@ class Train
     current_station.depart(self)
     previous_station.accept(self)
     @location -= 1
-    end
   end
 
   def current_station

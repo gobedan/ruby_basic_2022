@@ -10,14 +10,12 @@ class Route
   end
 
   def remove(station)
-    # не стал исправлять не смотря на замечание :)
-    # если сделать, как в твоем варианте, то метод не будет работать для маршрутов вида: 1--2--3--2--3
-    middle_stations = @stations[1..-2]
-    middle_stations.delete(station)
-    @stations = [@stations[0], middle_stations, @stations[-1]].compact
+    @stations.delete(station) unless [@stations.first, @stations.last].include?(station)
   end
 
   def show_stations
-    @stations.each {|station| puts station.name}
+    result = "[ "
+    @stations.each {|station| result += " #{station.name} "}
+    result += " ]"
   end
 end

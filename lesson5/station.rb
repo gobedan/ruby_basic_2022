@@ -14,6 +14,7 @@ class Station
     @trains.delete(train)
   end
 
+  # accepts :cargo or :passenger Symbol
   def trains(type = nil)
     type ? @trains.filter { |train| train.type == type } : @trains
   end
