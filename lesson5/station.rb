@@ -1,9 +1,19 @@
 class Station 
+  include Countable
+  
   attr_reader :name
+
+  @@all_stations = []
+
+  def self.all 
+    @@all_stations
+  end
 
   def initialize(name) 
     @name = name 
     @trains = [] 
+    @@all_stations << self
+    register_instance
   end
 
   def accept(train)

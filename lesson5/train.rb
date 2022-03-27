@@ -1,11 +1,21 @@
 class Train
+  include Nameable, Countable
+
   attr_reader :speed, :carriages, :id, :route
+
+  @@all_trains = [] 
+
+  def self.find(id)
+    @@all_trains.find { _1.id == id }
+  end
 
   def initialize(id)
     @id = id
     @speed = 0
     @location = 0
     @carriages = []
+    @@all_trains << self
+    register_instance
   end
 
   def speedup

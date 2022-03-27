@@ -1,3 +1,5 @@
+require_relative 'nameable.rb'
+require_relative 'countable.rb'
 require_relative 'cargo_carriage.rb'
 require_relative 'cargo_train.rb'
 require_relative 'carriage.rb'
@@ -14,8 +16,8 @@ class Main
     @trains = []
     @routes = []
     @stations = []
-    #seed
-    main
+    seed
+    #main
   end
 
   private

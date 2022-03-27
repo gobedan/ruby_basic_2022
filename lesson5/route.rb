@@ -1,8 +1,11 @@
 class Route
+  include Countable 
+
   attr_reader :stations
   
   def initialize(departure, destination)
     @stations = [departure, destination]
+    register_instance
   end
 
   def add(station)
