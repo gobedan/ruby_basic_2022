@@ -1,5 +1,5 @@
 class Train
-  attr_reader :speed, :carriages
+  attr_reader :speed, :carriages, :id, :route
 
   def initialize(id)
     @id = id
@@ -44,14 +44,14 @@ class Train
   end
 
   def current_station
-    @route.stations[@location]
+    @route.stations[@location] if @route
   end
   
   def next_station
-    @route.stations[@location + 1]
+    @route.stations[@location + 1] if @route
   end
 
   def previous_station
-    @route.stations[@location - 1] if @location > 0
+    @route.stations[@location - 1] if @route && @location > 0
   end 
 end

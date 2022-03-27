@@ -14,14 +14,16 @@ class Main
     @trains = []
     @routes = []
     @stations = []
-    seed 
+    #seed
     main
   end
 
-  #private 
+  private
+
   def seed 
     @stations = [Station.new("Vasuki"), Station.new("Saratov"), Station.new("Kukuevo")]
     @routes = [Route.new(@stations.first, @stations[1]), Route.new(@stations[1], @stations.last)]
+    @trains = [CargoTrain.new('001-first'), PassengerTrain.new('002-second')]
   end
 
   def main 
@@ -33,9 +35,8 @@ class Main
       puts "1 - create (station, train or route)"
       puts "2 - edit route"
       puts "3 - control train"
-      puts "4 - show station list"
+      puts "4 - show all stations with trains"
       puts "type 'exit' to finish"
-
     
       command = gets.chomp
 
@@ -45,21 +46,14 @@ class Main
       when '2' 
         edit_route if @routes.any?
       when '3' 
-        control_train
+        control_train if @trains.any? 
       when '4' 
         station_list     
+      when 'exit'
+        break
+      else 
+        puts "Wrong command! Try again!"
       end
-
-      break if command == 'exit'
-      puts "Wrong command! Try again!"
-      # - Создавать станции
-      # - Создавать поезда
-      # - Создавать маршруты и управлять станциями в нем (добавлять, удалять)
-      # - Назначать маршрут поезду
-      # - Добавлять вагоны к поезду
-      # - Отцеплять вагоны от поезда
-      # - Перемещать поезд по маршруту вперед и назад
-      # - Просматривать список станций и список поездов на станции
     end
   end
 
@@ -103,6 +97,7 @@ class Main
       puts "type 'back' to go back"
 
       command = gets.chomp
+
       case command
       when '1'
         # избегаем дублирования станций в маршруте 
@@ -118,11 +113,52 @@ class Main
   end
 
   def control_train
+    puts "Choose train to control: "
 
+    train = select_train 
+
+    loop do
+      puts "Train №#{train.id}, type: #{train.type}, carriages: #{train.carriages.length}"
+      if train.route
+        puts "  Route: #{train.route.show_stations}" 
+        puts "    Current station: #{train.current_station.name}"
+      end
+      puts "1 - assign route"
+      puts "2 - add carriage"
+      puts "3 - remove carriage"
+      puts "4 - go forward"
+      puts "5 - go back"
+      puts "type 'back' to return to previous menu"
+
+      command = gets.chomp 
+
+      case command
+      when '1'
+        train.route = select_route
+      when '2'
+        train.add_carriage(PassengerCarriage.new) if train.type == :passenger
+        train.add_carriage(CargoCarriage.new) if train.type == :cargo 
+      when '3'
+        train.remove_carriage
+      when '4'
+        train.go_forward
+      when '5'
+        train.go_back
+      when 'back'
+        break
+      else
+        puts "Error: wrong command! Try again!"
+      end
+    end
   end
 
   def station_list 
-
+    @stations.each_with_index do |station, i| 
+      puts "#{i + 1} - #{station.name} "
+      station.trains.each_with_index do |train, j|
+        puts "  #{j + 1} - #{train.id}, type: #{train.type.to_s}"
+      end
+    end
   end
   
   def create_station
@@ -196,6 +232,18 @@ class Main
       return @routes[index - 1] if @routes[index - 1]
 
       puts "Error: wrong route number"
+    end
+  end
+
+  def select_train
+    loop do
+      @trains.each_with_index { |elem, i| puts "#{i + 1} - #{elem.id} "}
+      index = gets.chomp.to_i 
+
+      # как можно это красиво сократить? 
+      return @trains[index - 1] if @trains[index - 1]
+
+      puts "Error: wrong train number"
     end
   end
 end   
