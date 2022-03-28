@@ -25,7 +25,7 @@ class Main
   def seed 
     @stations = [Station.new("Vasuki"), Station.new("Saratov"), Station.new("Kukuevo")]
     @routes = [Route.new(@stations.first, @stations[1]), Route.new(@stations[1], @stations.last)]
-    @trains = [CargoTrain.new('001-first'), PassengerTrain.new('002-second')]
+    @trains = [CargoTrain.new('001-fi'), PassengerTrain.new('002-se')]
   end
 
   def main 
@@ -168,7 +168,13 @@ class Main
     print "Enter new station name: "
 
     name = gets.chomp
-    @stations << Station.new(name)
+
+    begin
+      @stations << Station.new(name)
+      puts "Station #{name} successfully created!"
+    rescue => e
+      puts "Error: #{e.message}"
+    end
   end
 
   def create_route
@@ -198,9 +204,14 @@ class Main
     print "Enter cargo train identifier: "
 
     id = gets.chomp 
-    @trains << CargoTrain.new(id)
 
-    puts "Cargo train №-#{id} successfully created!"
+    begin
+      @trains << CargoTrain.new(id)
+      puts "Cargo train №-#{id} successfully created!"
+    rescue => e
+      puts "Error: #{e.message}"
+    end
+
   end
 
   def create_passenger_train
@@ -208,9 +219,14 @@ class Main
     print "Enter passenger train identifier: "
     
     id = gets.chomp 
-    @trains << PassengerTrain.new(id)
-    
-    puts "Passenger train №-#{id} successfully created!"
+
+    begin
+      @trains << PassengerTrain.new(id)
+      puts "Passenger train №-#{id} successfully created!"
+    rescue => e
+      puts "Error: #{e.message}"
+    end
+
   end
 
   def select_station(stations = @stations)

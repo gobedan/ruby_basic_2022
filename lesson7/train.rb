@@ -5,6 +5,8 @@ class Train
 
   @@all_trains = [] 
 
+  NAMING_PATTERN = /^[a-z0-9]{3}[-]?[a-z0-9]{2}$/i
+
   def self.find(id)
     @@all_trains.find { _1.id == id }
   end
@@ -14,6 +16,7 @@ class Train
     @speed = 0
     @location = 0
     @carriages = []
+    validate!
     @@all_trains << self
     register_instance
   end
@@ -63,5 +66,18 @@ class Train
 
   def previous_station
     @route.stations[@location - 1] if @route && @location > 0
-  end 
+  end
+  
+  def valid?  
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private 
+
+  def validate! 
+    raise StandardError.new("Wrong train identifier pattern! Should be: xxx-xx") unless id.match?(NAMING_PATTERN) 
+  end
 end
