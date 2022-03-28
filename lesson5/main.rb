@@ -17,7 +17,7 @@ class Main
     @routes = []
     @stations = []
     seed
-    #main
+    main
   end
 
   private

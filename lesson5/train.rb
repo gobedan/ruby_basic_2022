@@ -1,7 +1,7 @@
 class Train
   include Nameable, Countable
 
-  attr_reader :speed, :carriages, :id, :route
+  attr_reader :speed, :carriages, :id, :route, :type
 
   @@all_trains = [] 
 
@@ -27,7 +27,7 @@ class Train
   end
   
   def add_carriage(carriage)
-    carriages << carriage
+    carriages << carriage if type == carriage.type
   end
 
   def remove_carriage

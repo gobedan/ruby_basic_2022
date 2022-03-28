@@ -6,10 +6,6 @@ class CargoTrain < Train
     super
   end
 
-  def add_carriage(carriage)
-    super if carriage.instance_of?(CargoCarriage)  
-  end
-
   def type 
     :cargo
   end
