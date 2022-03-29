@@ -26,6 +26,15 @@ class Main
     @stations = [Station.new("Vasuki"), Station.new("Saratov"), Station.new("Kukuevo")]
     @routes = [Route.new(@stations.first, @stations[1]), Route.new(@stations[1], @stations.last)]
     @trains = [CargoTrain.new('001-fi'), PassengerTrain.new('002-se')]
+    @trains[0].route = @routes[0]
+    @trains[1].route = @routes[1]
+    @trains[0].add_carriage(CargoCarriage.new(10))
+    @trains[0].add_carriage(CargoCarriage.new(20))
+    @trains[0].add_carriage(CargoCarriage.new(30))
+    @trains[0].carriages.first.take_volume(5)
+    @trains[1].add_carriage(PassengerCarriage.new(12))
+    @trains[1].add_carriage(PassengerCarriage.new(24))
+    @trains[1].carriages.last.take_seat
   end
 
   def main 
@@ -130,6 +139,8 @@ class Main
       puts "3 - remove carriage"
       puts "4 - go forward"
       puts "5 - go back"
+      puts "6 - show carriages" 
+      puts "7 - fill carriage"
       puts "type 'back' to return to previous menu"
 
       command = gets.chomp 
@@ -138,14 +149,26 @@ class Main
       when '1'
         train.route = select_route
       when '2'
-        train.add_carriage(PassengerCarriage.new) if train.type == :passenger
-        train.add_carriage(CargoCarriage.new) if train.type == :cargo 
+        create_carriage(train)
       when '3'
         train.remove_carriage
       when '4'
         train.go_forward
       when '5'
         train.go_back
+      when '6'
+        carriages_list(train)
+      when '7'
+        carriage = select_carriage(train)
+        case carriage.type
+        when :cargo
+          print "Enter cargo size: "
+          size = gets.chomp.to_i 
+          carriage.take_volume(size)
+        when :passenger 
+          carriage.take_seat
+        end
+        carriages_list(train)
       when 'back'
         break
       else
@@ -154,15 +177,46 @@ class Main
     end
   end
 
+  def create_carriage(train)
+    case train.type
+    when :cargo
+      print "Enter carriage volume: "
+      size = gets.chomp.to_i
+      train.add_carriage(CargoCarriage.new(size))
+    when :passenger
+      print "Enter carriage seats: "
+      size = gets.chomp.to_i
+      train.add_carriage(PassengerCarriage.new(size))
+    end
+  end
+
   def station_list 
     @stations.each_with_index do |station, i| 
       puts "#{i + 1} - #{station.name} "
-      station.trains.each_with_index do |train, j|
-        puts "  #{j + 1} - #{train.id}, type: #{train.type.to_s}"
+      j = 0
+      station.each_train do |train|
+        puts "  #{j += 1} - №#{train.id}, type: #{train.type.to_s}, carriages: #{train.carriages.length}"
+        
+        carriages_list(train)
+
       end
     end
   end
   
+  def carriages_list(train)
+    k = 0
+    train.each_carriage do |carriage|
+      case carriage.type
+      when :cargo
+        puts "    #{k += 1} - type: #{carriage.type}, free volume: #{carriage.free_volume}, occupied volume: #{carriage.occupied_volume}"
+      when :passenger
+        puts "    #{k += 1} - type: #{carriage.type}, free seats: #{carriage.free_seats}, occupied seats: #{carriage.occupied_seats}"
+      else
+        puts "    #{k += 1} - type: undefined"
+      end
+    end
+  end
+
   def create_station
     puts "  ..creating station"
     print "Enter new station name: "
@@ -262,6 +316,17 @@ class Main
       return @trains[index - 1] if @trains[index - 1]
 
       puts "Error: wrong train number"
+    end
+  end
+
+  def select_carriage(train)
+    loop do 
+      carriages_list(train)
+      index = gets.chomp.to_i 
+
+      return train.carriages[index - 1] if train.carriages[index - 1]
+
+      puts "Error: wrong carriage number"
     end
   end
 end   

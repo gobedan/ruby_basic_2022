@@ -17,6 +17,10 @@ class Station
     register_instance
   end
 
+  def each_train(&block)
+    @trains.each(&block)
+  end
+
   def accept(train)
     @trains << train
   end

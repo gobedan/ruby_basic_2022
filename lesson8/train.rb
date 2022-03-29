@@ -21,6 +21,10 @@ class Train
     register_instance
   end
 
+  def each_carriage(&block)
+    @carriages.each(&block)
+  end
+
   def speedup
     @speed += 10
   end
