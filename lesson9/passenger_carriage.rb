@@ -6,7 +6,7 @@ class PassengerCarriage < Carriage
   attr_reader :seats, :free_seats
 
   def initialize(seats)
-    super
+    super()
     @free_seats = @seats = seats
   end
 

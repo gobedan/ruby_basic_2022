@@ -6,7 +6,7 @@ class CargoCarriage < Carriage
   attr_reader :volume, :free_volume
 
   def initialize(volume)
-    super
+    super()
     @free_volume = volume
     @volume = volume
   end
