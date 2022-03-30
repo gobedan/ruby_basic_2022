@@ -87,6 +87,9 @@ class Train
   private
 
   def validate!
-    raise StandardError, 'Wrong train identifier pattern! Should be: xxx-xx' unless id.match?(NAMING_PATTERN)
+    return if id.match?(NAMING_PATTERN)
+
+    raise StandardError,
+          'Wrong train identifier pattern! Should be: xxx-xx'
   end
 end

@@ -26,7 +26,9 @@ module Countable
       # Хотим, чтобы счетчик в родительском классе тоже инкрементировался
       #  например: Train.instances будет показывать все поезда, а CargoTrain.instances только грузовые
       self.class.instances += 1
-      self.class.superclass.instances += 1 if self.class.superclass.instance_variable_defined?(:@instances)
+      return unless self.class.superclass.instance_variable_defined?(:@instances)
+
+      self.class.superclass.instances += 1
     end
   end
 end
