@@ -223,12 +223,10 @@ class Main
 
     name = gets.chomp
 
-    begin
-      @stations << Station.new(name)
-      puts "Station #{name} successfully created!"
-    rescue StandardError => e
-      puts "Error: #{e.message}"
-    end
+    @stations << Station.new(name)
+    puts "Station #{name} successfully created!"
+  rescue StandardError => e
+    puts "Error: #{e.message}"
   end
 
   def create_route
@@ -259,12 +257,10 @@ class Main
 
     id = gets.chomp
 
-    begin
-      @trains << CargoTrain.new(id)
-      puts "Cargo train №-#{id} successfully created!"
-    rescue StandardError => e
-      puts "Error: #{e.message}"
-    end
+    @trains << CargoTrain.new(id)
+    puts "Cargo train №-#{id} successfully created!"
+  rescue StandardError => e
+    puts "Error: #{e.message}"
   end
 
   def create_passenger_train
@@ -273,12 +269,10 @@ class Main
 
     id = gets.chomp
 
-    begin
-      @trains << PassengerTrain.new(id)
-      puts "Passenger train №-#{id} successfully created!"
-    rescue StandardError => e
-      puts "Error: #{e.message}"
-    end
+    @trains << PassengerTrain.new(id)
+    puts "Passenger train №-#{id} successfully created!"
+  rescue StandardError => e
+    puts "Error: #{e.message}"
   end
 
   def select_station(stations = @stations)
