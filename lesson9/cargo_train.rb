@@ -1,12 +1,9 @@
-require_relative 'train.rb'
+# frozen_string_literal: true
+
+require_relative 'train'
 
 class CargoTrain < Train
-
-  def initialize(id)
-    super
-  end
-
-  def type 
+  def type
     :cargo
   end
 end

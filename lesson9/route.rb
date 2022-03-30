@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Route
-  include Countable 
+  include Countable
 
   attr_reader :stations
-  
+
   def initialize(departure, destination)
     @stations = [departure, destination]
     register_instance
@@ -17,8 +19,8 @@ class Route
   end
 
   def show_stations
-    result = "[ "
-    @stations.each {|station| result += " #{station.name} "}
-    result += " ]"
+    result = '[ '
+    @stations.each { |station| result += " #{station.name} " }
+    result += ' ]'
   end
 end

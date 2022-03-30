@@ -1,9 +1,12 @@
-require_relative 'carriage.rb'
+# frozen_string_literal: true
+
+require_relative 'carriage'
 
 class CargoCarriage < Carriage
   attr_reader :volume, :free_volume
 
   def initialize(volume)
+    super
     @free_volume = volume
     @volume = volume
   end
@@ -16,7 +19,7 @@ class CargoCarriage < Carriage
     volume - free_volume
   end
 
-  def type 
+  def type
     :cargo
   end
 end

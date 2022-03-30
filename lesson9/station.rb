@@ -1,17 +1,19 @@
-class Station 
+# frozen_string_literal: true
+
+class Station
   include Countable
-  
+
   attr_reader :name
 
   @@all_stations = []
 
-  def self.all 
+  def self.all
     @@all_stations
   end
 
-  def initialize(name) 
-    @name = name.to_s 
-    @trains = [] 
+  def initialize(name)
+    @name = name.to_s
+    @trains = []
     validate!
     @@all_stations << self
     register_instance
@@ -34,16 +36,16 @@ class Station
     type ? @trains.filter { |train| train.type == type } : @trains
   end
 
-  def valid?  
+  def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
-  private 
+  private
 
-  def validate! 
-    raise StandardError.new("Station name is too short!") if name.length < 2
+  def validate!
+    raise StandardError, 'Station name is too short!' if name.length < 2
   end
 end
