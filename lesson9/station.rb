@@ -5,7 +5,9 @@ class Station
 
   attr_reader :name
 
+  # rubocop:disable Style/ClassVars
   @@all_stations = []
+  # rubocop:enable Style/ClassVars
 
   def self.all
     @@all_stations

@@ -11,6 +11,7 @@ require_relative 'route'
 require_relative 'station'
 require_relative 'train'
 
+# rubocop:disable Metrics/ClassLength
 class Main
   attr_reader :trains, :routes, :stations
 
@@ -24,21 +25,7 @@ class Main
 
   private
 
-  def seed
-    @stations = [Station.new('Vasuki'), Station.new('Saratov'), Station.new('Kukuevo')]
-    @routes = [Route.new(@stations.first, @stations[1]), Route.new(@stations[1], @stations.last)]
-    @trains = [CargoTrain.new('001-fi'), PassengerTrain.new('002-se')]
-    @trains[0].route = @routes[0]
-    @trains[1].route = @routes[1]
-    @trains[0].add_carriage(CargoCarriage.new(10))
-    @trains[0].add_carriage(CargoCarriage.new(20))
-    @trains[0].add_carriage(CargoCarriage.new(30))
-    @trains[0].carriages.first.take_volume(5)
-    @trains[1].add_carriage(PassengerCarriage.new(12))
-    @trains[1].add_carriage(PassengerCarriage.new(24))
-    @trains[1].carriages.last.take_seat
-  end
-
+  # rubocop:disable Metrics/BlockLength, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
   def main
     puts '== Train station =='
 
@@ -68,6 +55,21 @@ class Main
         puts 'Wrong command! Try again!'
       end
     end
+  end
+
+  def seed
+    @stations = [Station.new('Vasuki'), Station.new('Saratov'), Station.new('Kukuevo')]
+    @routes = [Route.new(@stations.first, @stations[1]), Route.new(@stations[1], @stations.last)]
+    @trains = [CargoTrain.new('001-fi'), PassengerTrain.new('002-se')]
+    @trains[0].route = @routes[0]
+    @trains[1].route = @routes[1]
+    @trains[0].add_carriage(CargoCarriage.new(10))
+    @trains[0].add_carriage(CargoCarriage.new(20))
+    @trains[0].add_carriage(CargoCarriage.new(30))
+    @trains[0].carriages.first.take_volume(5)
+    @trains[1].add_carriage(PassengerCarriage.new(12))
+    @trains[1].add_carriage(PassengerCarriage.new(24))
+    @trains[1].carriages.last.take_seat
   end
 
   def creation_menu
@@ -112,11 +114,11 @@ class Main
 
       case command
       when '1'
-        # избегаем дублирования станций в маршруте
+        # avoiding dublicates for route stations
         available_stations = @stations.reject { |station| route.stations.include?(station) }
         route.add(select_station(available_stations)) if available_stations.any?
       when '2'
-        # чтобы не весь список станций выводился, а только тот, которые действительно есть в маршруте
+        # to show stations only that really exist in route
         route.remove(select_station(route.stations[1..-2])) if route.stations.length > 2
       when 'back'
         break
@@ -177,6 +179,7 @@ class Main
       end
     end
   end
+  # rubocop:enable Metrics/BlockLength, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
 
   def create_carriage(train)
     case train.type
@@ -208,9 +211,11 @@ class Main
     train.each_carriage do |carriage|
       case carriage.type
       when :cargo
-        puts "    #{k += 1} - type: #{carriage.type}, free volume: #{carriage.free_volume}, occupied volume: #{carriage.occupied_volume}"
+        puts "    #{k += 1} - type: #{carriage.type}, free volume: #{carriage.free_volume}, " \
+             "occupied volume: #{carriage.occupied_volume}"
       when :passenger
-        puts "    #{k += 1} - type: #{carriage.type}, free seats: #{carriage.free_seats}, occupied seats: #{carriage.occupied_seats}"
+        puts "    #{k += 1} - type: #{carriage.type}, free seats: #{carriage.free_seats}, " \
+             "occupied seats: #{carriage.occupied_seats}"
       else
         puts "    #{k += 1} - type: undefined"
       end
@@ -230,8 +235,6 @@ class Main
   end
 
   def create_route
-    puts '  ..creating route'
-
     if @stations.length < 2
       puts 'Error: There should be at least 2 stations to create route!'
 
@@ -242,8 +245,7 @@ class Main
 
     departure_station = select_station
 
-    puts "[#{departure_station.name} -- ...]"
-    puts '    choose destination station:'
+    puts "[#{departure_station.name} -- ...]\n     choose destination station:"
 
     destination_station = select_station
     @routes << Route.new(departure_station, destination_station)
@@ -319,3 +321,4 @@ class Main
     end
   end
 end
+# rubocop enable:all

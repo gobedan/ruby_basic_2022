@@ -5,14 +5,14 @@ module Countable
     base.extend ClassMethods
     base.include InstanceMethods
 
-    # переменную уровня класса со счетчиком нужно проинициализировать
+    # class-level variable should be initialized
     base.instances = 0
   end
 
   module ClassMethods
     attr_accessor :instances
 
-    # Чтобы в потомках тоже проинициализировать
+    # in child classes it should be initialized too
     def inherited(subclass)
       super
       subclass.instances = 0
@@ -23,8 +23,8 @@ module Countable
     protected
 
     def register_instance
-      # Хотим, чтобы счетчик в родительском классе тоже инкрементировался
-      #  например: Train.instances будет показывать все поезда, а CargoTrain.instances только грузовые
+      # Counter in superclass should increment too
+      #   ex.: Train.instances shows all trains, CargoTrain.instances shows only cargo trains count
       self.class.instances += 1
       return unless self.class.superclass.instance_variable_defined?(:@instances)
 

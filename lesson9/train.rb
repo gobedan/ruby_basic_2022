@@ -6,7 +6,9 @@ class Train
 
   attr_reader :speed, :carriages, :id, :route, :type
 
+  # rubocop:disable Style/ClassVars
   @@all_trains = []
+  # rubocop:enable Style/ClassVars
 
   NAMING_PATTERN = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
 
