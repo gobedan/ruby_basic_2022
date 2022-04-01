@@ -11,7 +11,7 @@ require_relative 'route'
 require_relative 'station'
 require_relative 'train'
 
-# rubocop:disable Metrics/ClassLength
+# rrubocop:disable Metrics/ClassLength
 class Main
   attr_reader :trains, :routes, :stations
 
@@ -25,7 +25,6 @@ class Main
 
   private
 
-  # rubocop:disable Metrics/BlockLength, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
   def main
     puts '== Train station =='
 
@@ -148,38 +147,45 @@ class Main
 
       command = gets.chomp
 
-      case command
-      when '1'
-        train.route = select_route
-      when '2'
-        create_carriage(train)
-      when '3'
-        train.remove_carriage
-      when '4'
-        train.go_forward
-      when '5'
-        train.go_back
-      when '6'
-        carriages_list(train)
-      when '7'
-        carriage = select_carriage(train)
-        case carriage.type
-        when :cargo
-          print 'Enter cargo size: '
-          size = gets.chomp.to_i
-          carriage.take_volume(size)
-        when :passenger
-          carriage.take_seat
-        end
-        carriages_list(train)
-      when 'back'
-        break
-      else
-        puts 'Error: wrong command! Try again!'
-      end
+      action_with_train(train, command)
     end
   end
-  # rubocop:enable Metrics/BlockLength, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
+
+  def action_with_train(train, command)
+    case command
+    when '1'
+      train.route = select_route
+    when '2'
+      create_carriage(train)
+    when '3'
+      train.remove_carriage
+    when '4'
+      train.go_forward
+    when '5'
+      train.go_back
+    when '6'
+      carriages_list(train)
+    when '7'
+      carriage = select_carriage(train)
+      take_space(carriage)
+      carriages_list(train)
+    when 'back'
+      break
+    else
+      puts 'Error: wrong command! Try again!'
+    end
+  end
+
+  def take_space(carriage)
+    case carriage.type
+    when :cargo
+      print 'Enter cargo size: '
+      size = gets.chomp.to_i
+      carriage.take_volume(size)
+    when :passenger
+      carriage.take_seat
+    end
+  end
 
   def create_carriage(train)
     case train.type
@@ -321,4 +327,3 @@ class Main
     end
   end
 end
-# rubocop enable:all
